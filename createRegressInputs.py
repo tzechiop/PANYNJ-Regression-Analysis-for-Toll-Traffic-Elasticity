@@ -8,6 +8,8 @@ The script compiles columns from spreadsheets specified in 'colfile'. The column
 spreadsheet, and thus should be included in every spreadsheet.
 The file colfile should have have the following fields: 'infile', 'column', 'xy'
 
+The file also converts variables to log if specified in 'colfile'.
+
 The line below provides an example of a command used to run this script.
 python createRegressInputs.py data\\regress_para\\regresscols_pathtotal_1.xlsx -o data\\regress_data
 
@@ -18,6 +20,7 @@ python createRegressInputs.py data\\regress_para\\regresscols_pathtotal_1.xlsx -
 import argparse
 import os
 import pandas as pd
+import numpy as np
 
 # Function to create output filename
 def createOutfilename(infile, add):
@@ -31,6 +34,12 @@ def addNew(data, newdata, groupcol, columns):
         data = pd.DataFrame(newdata[[groupcol] + columns])
     else:
         data = pd.merge(data, newdata[[groupcol] + columns], how = 'left', on = groupcol)
+    return data
+
+# Convert speficied columns to log form
+def convertToLog(data, column_list):
+    for column in column_list:
+        data[column] = data[column].apply(np.log10)
     return data
 
 # Parse arguments
@@ -86,6 +95,16 @@ if sumY:
     ydata = pd.concat([ydata[groupcol], ydata[cols].sum(axis=1)], axis = 1)
     ydata.columns = [groupcol, 'y']
 
+# Convert columns to log
+print('Converting columns to log')
+logcolumn_list = coldata['column'][(coldata['xy'] == 'x') & (coldata['log'] == True)]
+xdata = convertToLog(xdata, logcolumn_list)
+if sumY:
+    ydata = convertToLog(ydata, ['y'])
+else:
+    logcolumn_list = coldata['column'][(coldata['xy'] == 'y') & (coldata['log'] == True)]
+    ydata = convertToLog(ydata, logcolumn_list)
+        
 # Output files
 ydata.to_excel(outfiley, index = False)
 xdata.to_excel(outfilex, index = False)
