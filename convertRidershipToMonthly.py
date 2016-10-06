@@ -16,6 +16,8 @@ import argparse
 import os
 import pandas as pd
 
+print('Grouping data by month...')
+
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('infile')
@@ -26,14 +28,14 @@ parser.add_argument('-c', '--groupcol', default='Year-Month', help="specifies th
 args = vars(parser.parse_args())
 infile, outfile, firstcol, lastcol, groupcol = args['infile'], args['outfile'], args['firstcol'], args['lastcol'], args['groupcol']
 
-# If the outfile name was not specified, create defualt outfile name
+# If the outfile name was not specified, create default outfile name
 if outfile is None:
     outfile, ext = os.path.splitext(infile)
     outfile += '_monthly' + ext
+print('Input: %s' % infile)
+print('Output: %s' % outfile)
 
 # Read data
-basepath = os.path.dirname(__file__)
-#infile = r'data\path_ridership.xlsx'
 data = pd.read_excel(infile)
 
 # Determine columns to keep in output file
@@ -52,3 +54,4 @@ monthly['Year'], monthly['Month'] = zip(*([int(y) for y in x.split('-')] for x i
 monthly = monthly.sort_values(['Year', 'Month'])
 monthly[['Month', 'Year', groupcol] + keepcol_list].to_excel(outfile, index = False)
 
+print('Success!')
