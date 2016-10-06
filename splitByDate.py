@@ -36,6 +36,10 @@ def month_year_iter( start_month, start_year, end_month, end_year ):
         dates.append('{0:d}-{1:d}'.format(y, m+1))
     return dates
 
+# ============================================================================
+
+print('Running splitByDate.py...')
+
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('infile')

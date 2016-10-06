@@ -16,7 +16,9 @@ import argparse
 import os
 import pandas as pd
 
-print('Grouping data by month...')
+# ============================================================================
+
+print('Running convertRidershipToMonthly.py...')
 
 # Parse arguments
 parser = argparse.ArgumentParser()

@@ -16,6 +16,10 @@ def createOutfilename(infile, add):
     outfile += add + ext
     return outfile
 
+# ============================================================================
+
+print('Running regress.py...')
+
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('infiley')
@@ -31,8 +35,13 @@ print('Infile for x: %s' % infilex)
 print('Outfile for regression: %s' % outfile)
 
 # Input x and y data
+infiley = 'data\\regress_data\\regresscols_pathtotal_CPI_US_y.xlsx'
+infilex = 'data\\regress_data\\regresscols_pathtotal_CPI_US_x.xlsx'
+
 y = pd.read_excel(infiley)
 x = pd.read_excel(infilex)
+
+
 
 # Perform Regerssion and output summary
 print('Performing regression')

@@ -42,6 +42,10 @@ def convertToLog(data, column_list):
         data[column] = data[column].apply(np.log10)
     return data
 
+# ============================================================================
+
+print('Running createRegressInputs.py...')
+
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('colfile')
