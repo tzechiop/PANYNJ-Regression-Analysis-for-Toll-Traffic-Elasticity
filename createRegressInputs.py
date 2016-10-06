@@ -20,11 +20,9 @@ import os
 import pandas as pd
 
 # Function to create output filename
-def createOutfilename(infile, add, outpath):
+def createOutfilename(infile, add):
     outfile, ext = os.path.splitext(infile)
     outfile += add + ext
-    if outpath is not None:
-        outfile = os.path.join(outpath, os.path.basename(outfile))
     return outfile
     
 # Function to combine new x or y data
@@ -44,13 +42,17 @@ parser.add_argument('-ox', '--outfilex', help="specify the output file. default 
 parser.add_argument('-c', '--groupcol', default='Year-Month', help="specifies the column that specifies the time scale")
 parser.add_argument('-y', '--sumY', default=True, help="specifies if the Y data should be summed or not")
 args = vars(parser.parse_args())
-colfile, outpath, outfiley, outfilex, groupcol, sumY, removeNaN = args['colfile'], args['outpath'], args['outfiley'], args['outfilex'], args['groupcol'], args['sumY'], args['removeNaN']
+colfile, outpath, outfiley, outfilex, groupcol, sumY = args['colfile'], args['outpath'], args['outfiley'], args['outfilex'], args['groupcol'], args['sumY']
 
 # If the outfile names were not specified, create defualt outfile names
 if outfiley is None:
-    outfiley = createOutfilename(colfile, '_y', outpath)
+    outfiley = createOutfilename(colfile, '_y')
 if outfilex is None:
-    outfilex = createOutfilename(colfile, '_x', outpath)
+    outfilex = createOutfilename(colfile, '_x')
+    
+if outpath is not None:
+    outfiley = os.path.join(outpath, os.path.basename(outfiley))
+    outfilex = os.path.join(outpath, os.path.basename(outfilex))
 
 print('Column file: %s' % colfile)
 print('Outfile for y: %s' % outfiley)
