@@ -7,7 +7,7 @@ month. The input data should have a column 'Year-Month' (unless specified otherw
 that can be used to group by month.
 
 To run this script on path data, use the following command:
-python covertRidershipToMonthly.py data\\path_ridership.xlsx -f 7 
+python covertRidershipToMonthly.py data\\rawdata\\path_ridership.xlsx -f 7 
 
 @author: thasegawa
 """

@@ -57,6 +57,16 @@ parser.add_argument('-y', '--sumY', default=True, help="specifies if the Y data 
 args = vars(parser.parse_args())
 colfile, outpath, outfiley, outfilex, groupcol, sumY = args['colfile'], args['outpath'], args['outfiley'], args['outfilex'], args['groupcol'], args['sumY']
 
+#==============================================================================
+# os.chdir(r'C:\Users\thasegawa\Documents\53 Port Authority Toll\06 Python Projects\Regression Analysis')
+# colfile = 'data\\regress_para\\regresscols_pathtotal_all_nonlog.xlsx'
+# outpath = 'data\\regress_data'
+# outfiley = None
+# outfilex = None
+# groupcol = 'Year-Month'
+# sumY = False
+#==============================================================================
+
 # If the outfile names were not specified, create defualt outfile names
 if outfiley is None:
     outfiley = createOutfilename(colfile, '_y')
@@ -103,10 +113,11 @@ if sumY:
 print('Converting columns to log')
 logcolumn_list = coldata['column'][(coldata['xy'] == 'x') & (coldata['log'] == True)]
 xdata = convertToLog(xdata, logcolumn_list)
+logcolumn_list = coldata['column'][(coldata['xy'] == 'y') & (coldata['log'] == True)]
 if sumY:
-    ydata = convertToLog(ydata, ['y'])
+    if len(logcolumn_list) > 0:
+        ydata = convertToLog(ydata, ['y'])
 else:
-    logcolumn_list = coldata['column'][(coldata['xy'] == 'y') & (coldata['log'] == True)]
     ydata = convertToLog(ydata, logcolumn_list)
         
 # Output files

@@ -34,18 +34,12 @@ print('Infile for y: %s' % infiley)
 print('Infile for x: %s' % infilex)
 print('Outfile for regression: %s' % outfile)
 
-# Input x and y data
-infiley = 'data\\regress_data\\regresscols_pathtotal_CPI_US_y.xlsx'
-infilex = 'data\\regress_data\\regresscols_pathtotal_CPI_US_x.xlsx'
-
 y = pd.read_excel(infiley)
 x = pd.read_excel(infilex)
-
-
 
 # Perform Regerssion and output summary
 print('Performing regression')
 res = ols(y=y['y'], x=x[x.columns[1:]])
-with open(outfile, 'w') as f:
-    f.write(res.summary)
-print('Success!')
+outdf = res.summary_as_matrix
+outdf['R^2'] = res.r2
+outdf.to_csv(outfile)
